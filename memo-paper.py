@@ -6,7 +6,7 @@ import TkEasyGUI as sg
 SCRIPT_DIR = os.path.dirname(__file__)
 # 保存するファイル名を指定
 SAVE_FILE=os.path.join(SCRIPT_DIR , "notepad-save-test-data.tex")
-# メモ帳の大きさなどレイアウトを指定
+# メモ帳のレイアウトを定義
 layout = [
     # メモ帳のサイズを指定
     [sg.Multiline(size=(50,30),key="text")],
@@ -24,7 +24,7 @@ while True:
         break
     # 保存ボタンを押した際の挙動
     if event == "SAVE":
-        #ファイルに保存する処理。保存する場合は引数にw(write)を指定
+        #ファイルに保存する処理。保存する場合は関数のモードにw(write)を指定
         with open(SAVE_FILE,"w",encoding="utf-8") as f:
             f.write(values["text"])
             sg.popup("Saved")
