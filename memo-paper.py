@@ -5,12 +5,12 @@ import TkEasyGUI as sg
 # 保存先やファイル名については変数などを使い動的に変更が可能
 # 保存先のパスを指定
 SCRIPT_DIR = os.path.dirname(__file__)
-# 保存するファイル名を指定。ただし拡張子の指定をするわけではなくあくまでファイル名の指定するもの
+# 保存するファイル名と拡張子を指定。ただしPythonがこのファイルを操作する場合拡張子(.tex)は無視される
 SAVE_FILE=os.path.join(SCRIPT_DIR , "notepad-save-test-data.tex")
 # メモ帳の大きさなどレイアウトを指定
 layout = [
-    [sg.Multiline(size=(50,30),key="text")],# 行数と列数を指定し、書き込まれるデータをtxt形式に指定
-    [sg.Button("SAVE"),sg.Button("OPEN")],# 保存用とフォルダを読み込む用のボタンを作成 
+    [sg.Multiline(size=(50,30),key="text")],# 行数と列数を指定し、書き込まれるデータをstr形式で保存
+    [sg.Button("SAVE"),sg.Button("OPEN")],# 保存用とファイルを読み込む用のボタンを作成 
  ]
 #表示するウィンドウを作成
 window = sg.Window("memo", layout=layout)
