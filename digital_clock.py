@@ -18,7 +18,7 @@ layout = [
 window = tk.Window("テスト用デジタル時計", layout)
 # ウィンドウ内の処理
 while True:
-    event = window.read()
+    event, _ = window.read()
     if event == tk.WINDOW_CLOSED:
         break
     if event == "更新":
