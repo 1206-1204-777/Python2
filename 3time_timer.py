@@ -35,7 +35,7 @@ while True:
         # タイマーを停止し初期状態に戻す
         start_time = None
         window["-output-"].update("00:00:00")
-        # 音声再生中はそのまま継続
+        # 音声再生中はループをスキップ
         if pg.mixer.music.get_busy():
             continue
     # タイマーが始まっていないときの処理
