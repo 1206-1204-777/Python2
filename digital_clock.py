@@ -10,13 +10,13 @@ def  get_time_now():
 #表示する時計のレイアウトを指定
 layout = [
     #表示する内容、フォントを指定
-[tk.Text(get_time_now(),key="-output-",font=("Helvetica",80))],
+[tk.Label(get_time_now(),key="-output-",font=("Helvetica",80))],
 # 時刻を更新するボタンを作成
 [tk.Button("更新",font=("Helvetica",20))]
     ]
-#ウィンドウの表示
+#時計を表示させるウィンドウの作成
 window = tk.Window("テスト用デジタル時計", layout)
-# ウィンドウ内の処理
+# ウィンドウ内の処理をイベントループで実行
 while True:
     event, _ = window.read()
     if event == tk.WINDOW_CLOSED:
