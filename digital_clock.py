@@ -3,24 +3,22 @@
 '''
 import datetime
 import TkEasyGUI as tk
- # 現在時刻を文字列として取得する関数を定義
-def  get_time_now():
-     now = datetime.datetime.now()
-     return now.strftime("%H:%M:%S")
 #表示する時計のレイアウトを指定
 layout = [
     #表示する内容、フォントを指定
-[tk.Label(get_time_now(),key="-output-",font=("Helvetica",80))],
-# 時刻を更新するボタンを作成
-[tk.Button("更新",font=("Helvetica",20))]
-    ]
+[tk.Text("00:00:00",key="-output-",font=("Helvetica",80))]
+]
 #時計を表示させるウィンドウの作成
 window = tk.Window("テスト用デジタル時計", layout)
 # ウィンドウ内の処理をイベントループで実行
 while True:
-    event, _ = window.read()
+    # イベントループの開始時間を10msに指定
+    event, _ = window.read(timeout=10)
     if event == tk.WINDOW_CLOSED:
         break
-    if event == "更新":
-        window["-output-"].update(get_time_now())
+    # 現在時刻を取得して表示
+    now = datetime.datetime.now()
+    window["-output-"].update(
+        now.strftime("%H:%M:%S")
+        )
 window.close()
