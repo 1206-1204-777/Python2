@@ -27,6 +27,6 @@ def save_history(): #関数の宣言
 # 画面に表示する履歴の整形をする関数
 def list_format(history): #関数の宣言と引数にhistoryリストを指定
 # lambda関数（ラムダ関数、無名関数と呼ばれる簡単な処理を一時的に行うための関数）を使い各処理を定義
-    lf = lambda v: v.strip().replace("\n","")  # strip関数で前後の空白文字(スペース、タブ)を削除、replace関数で改行コード(\n)を空文字列("")に変更
+    lf = lambda v: v.strip().replace("\n","")  # strip関数で前後の空白文字(スペース、タブ,改行)を削除、replace関数で改行コード(\n)を空文字列("")に置換
     short = lambda v: v[:20] + "..." if len(v) > 20 else v  # 表示する履歴が20文字を超える場合、21字目以降の文字を"..."に置き換えて表示(保存した内容が変わるわけではない)
     return [f"{i+1:02}: {lf(short(h))}" for i, h in enumerate(history)] # 上記で定義したlambda関数を使い整形、履歴にインデックス(行番号)を付与した新しいリストを返す
