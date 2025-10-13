@@ -3,7 +3,7 @@ import json #Pythonオブジェクトとのデータとjsonファイルのデー
 import pyperclip as pp
 import TkEasyGUI as tk
 import shutil
-# pyperclipが使用するクリップボードツールを明示的に指定
+# xclipかxselが使えるならpyperclipに指定
 if shutil.which("xclip"):
     pp.set_clipboard("xclip")
 elif shutil.which("xsel"):
@@ -11,7 +11,7 @@ elif shutil.which("xsel"):
 
 # クリップボードの履歴を保存するファイルパスと保存するファイル名を指定
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # 保存先となるファイルパスを指定
-SAVE_FILE = os.path.join(ROOT_DIR,'clipbord-history.json') # 保存するファイル名の指定と保存先ファイルパスの指定
+SAVE_FILE = os.path.join(ROOT_DIR,'clipboard-history.json') # 保存するファイル名の指定と保存先ファイルパスの指定
 # 保存できる履歴の最大数を指定
 MAX_HISTORY = 20
 
@@ -27,7 +27,7 @@ def save_history(): #関数の宣言
 # 画面に表示する履歴の整形をする関数
 def list_format(history): #関数の宣言と引数にhistoryリストを指定
 # lambda関数（ラムダ関数、無名関数と呼ばれる簡単な処理を一時的に行うための関数）を使い各処理を定義
-    lf = lambda v: v.strip().replace("\n","")  # strip関数で前後の空白文字(スペース、タブ,改行)を削除、replace関数で改行コード(\n)を空文字列("")に置換
+    lf = lambda v: v.strip().replace("\n","")  # strip関数で改行を含む前後の空白文字を削除、replace関数で改行コード(\n)を除去
     short = lambda v: v[:20] + "..." if len(v) > 20 else v  # 表示する履歴が20文字を超える場合、21字目以降の文字を"..."に置き換えて表示(保存した内容が変わるわけではない)
     return [f"{i+1:02}: {lf(short(h))}" for i, h in enumerate(history)] # 上記で定義したlambda関数を使い整形、履歴にインデックス(行番号)を付与した新しいリストを返す
 # 表示するウィンドウのレイアウトを決める
@@ -57,7 +57,7 @@ while True:
         # 選択された履歴をクリップボードにコピー
         if values["-history-"]: # リストが空の状態かチェック
             set_text = values["-history-"][0] # LAYOUTで設定したキーを使い、リストの最初の文字列(index[0]、行番号)を取得
-            index = int(set_text[0:2]) # 取得した文字列(行番号)から2文字目までを取り出す
+            index = int(set_text[0:2]) # リストから取得した値の行番号を取り出す
             text = history[index - 1] # 行番号から1を引くことでリストに対応した正しいindexを算出、取得する値として指定(行番号01から1を引くと0になる)
             pp.copy(text) # 上記で指定したindexの値をクリップボードにコピー
             tk.popup("コピーしました")
