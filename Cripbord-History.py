@@ -11,7 +11,7 @@ elif shutil.which("xsel"):
 
 # クリップボードの履歴を保存するファイルパスと保存するファイル名を指定
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # 保存先となるファイルパスを指定
-SAVE_FILE = os.path.join(ROOT_DIR,'clipbord-history.json') # 保存するファイル名の指定と保存先ファイルの作成
+SAVE_FILE = os.path.join(ROOT_DIR,'clipbord-history.json') # 保存するファイル名の指定と保存先ファイルパスの指定
 # 保存できる履歴の最大数を指定
 MAX_HISTORY = 20
 
@@ -23,7 +23,7 @@ if os.path.exists(SAVE_FILE): # 保存先のファイルがある場合処理を
 # 履歴を保存する関数の作成
 def save_history(): #関数の宣言
     with open(SAVE_FILE,"w",encoding="utf-8") as f: # 履歴保存ファイルを開く。今回は"w(write、書き込み)を指定し変更できるようにする
-        json.dump(history,f,ensure_ascii=False,indent=2) #Pythonオブジェクト(historyリスト)をjsonに変換し履歴保存ファイルに保存
+        json.dump(history,f,ensure_ascii=False,indent=2) #Pythonオブジェクト(historyリスト)をjsonに変換し履歴保存ファイルとして保存
 # 画面に表示する履歴の整形をする関数
 def list_format(history): #関数の宣言と引数にhistoryリストを指定
 # lambda関数（ラムダ関数、無名関数と呼ばれる簡単な処理を一時的に行うための関数）を使い各処理を定義
@@ -68,7 +68,7 @@ while True:
             # 履歴のデータを取り出す
             index = int(sel_text[0:2])
             del history[index - 1]
-            window["-history-"].update(list_format(history)) # キーを使い取得した要素を更新前の状態で上書きする
+            window["-history-"].update(list_format(history)) # キーを使い取得した要素を更新後の状態で上書きする
             save_history() # 上記で上書きした内容を保存
             tk.popup("履歴を削除しました")
             pp.copy("") # 重複登録防止(削除してもクリップボードには値があるため、空文字列で上書きして履歴から完全に削除できるようにするため)
