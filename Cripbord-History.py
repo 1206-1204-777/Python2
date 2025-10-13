@@ -26,4 +26,6 @@ def save_history(): #関数の宣言
         json.dump(history,f,ensure_ascii=False,indent=2) #Pythonオブジェクト(history配列)をjsonに変換し 履歴保存ファイルに保存
 #   履歴の整形をする関数
 def list_format(history): #関数の宣言と引数にhistoryオブジェクトを指定
-    lf = lambda v: v.strip().replace("\n","") # 改行コードを"LF"に指定
+    lf = lambda v: v.strip().replace("\n","") 
+    short = lambda v: v[:20] + "..." if len(v) > 20 else v
+    return [f"{i+1:02}: {lf(short(h))}" for i, h in enumerate(history)]
