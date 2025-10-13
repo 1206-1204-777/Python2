@@ -10,14 +10,14 @@ elif shutil.which("xsel"):
     pp.set_clipboard("xsel")
 
 # クリップボードの履歴を保存するファイルパスと保存するファイル名を指定
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # 保存するファイルパスを取得
-SAVE_FILE = os.path.join(ROOT_DIR,'clipbord-history.json') # 保存するファイル名の指定
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__)) # 保存先となるファイルパスを指定
+SAVE_FILE = os.path.join(ROOT_DIR,'clipbord-history.json') # 保存するファイル名の指定と保存先ファイルの作成
 # 保存できる履歴の最大数を指定
 MAX_HISTORY = 20
 
 # 既存のクリップボード履歴を読み取る
 history = [] # クリップボードの内容を保持するリスト
-if os.path.exists(SAVE_FILE): # もしも保存した履歴がある場合の処理
+if os.path.exists(SAVE_FILE): # 保存先のファイルがある場合処理を行う
     with open(SAVE_FILE,"r",encoding="utf-8") as f: # 履歴の保存ファイルを開き文字コードの指定をして読み込む （rは読み込む(read)の意味)
         history = json.load(f)
 # 履歴を保存する関数の作成
@@ -43,20 +43,19 @@ LAYOUT = [
         tk.Button("コピー"),tk.Button("削除"),tk.Button("終了")
         ]
        ]
-# ウィンドウの作成り
+# ウィンドウの作成
 window = tk.Window("クリップボード履歴", LAYOUT)
 # イベントループを使用しウィンドウ内の処理を実行
 while True:
     # イベントを取得する
     event,values = window.read(timeout=100) # ウィンドウを読み込むイベントループの開始時間を100msに指定
-    # 終了ボタンが押された場合処理を終了
+    # 終了ボタンが押された場合処理を終了しウィンドウを閉じる
     if event == "終了":
-        tk.WINDOW_CLOSED
         break
     # コピーボタンを押した場合の処理
     if event == "コピー":
         # 選択された履歴をクリップボードにコピー
-        if values["-history-"]: # リストが空の常態化チェック
+        if values["-history-"]: # リストが空の状態かチェック
             set_text = values["-history-"][0] # LAYOUTで設定したキーを使い、リストの最初の文字列(index[0]、行番号)を取得
             index = int(set_text[0:2]) # 取得した文字列(行番号)から2文字目までを取り出す
             text = history[index - 1] # 行番号から1を引くことでリストに対応した正しいindexを算出、取得する値として指定(行番号01から1を引くと0になる)
@@ -69,7 +68,7 @@ while True:
             # 履歴のデータを取り出す
             index = int(sel_text[0:2])
             del history[index - 1]
-            window["-history-"].update(list_format(history)) # キーを使い取得した要素を要素の無い状態に上書きする
+            window["-history-"].update(list_format(history)) # キーを使い取得した要素を更新前の状態で上書きする
             save_history() # 上記で上書きした内容を保存
             tk.popup("履歴を削除しました")
             pp.copy("") # 重複登録防止(削除してもクリップボードには値があるため、空文字列で上書きして履歴から完全に削除できるようにするため)
