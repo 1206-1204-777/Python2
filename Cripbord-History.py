@@ -56,21 +56,25 @@ while True:
     # コピーボタンを押した場合の処理
     if event == "コピー":
         # 選択された履歴をクリップボードにコピー
-        set_text = values["-history-"][0] # LAYOUTで設定したキーを使い、リストの最初の文字列(index[0]、行番号)を取得
-        index = int(set_text[0:2]) # 取得した文字列(行番号)から2文字目までを取り出す
-        text = history[index - 1] # 行番号から1を引くことでリストに対応した正しいindexを算出、取得する値として指定(行番号01から1を引くと0になる)
-        pp.copy(text) # 上記で指定したindexの値をクリップボードにコピー
-        tk.popup("コピーしました")
+        if values["-history-"]: # リストが空の常態化チェック
+            set_text = values["-history-"][0] # LAYOUTで設定したキーを使い、リストの最初の文字列(index[0]、行番号)を取得
+            index = int(set_text[0:2]) # 取得した文字列(行番号)から2文字目までを取り出す
+            text = history[index - 1] # 行番号から1を引くことでリストに対応した正しいindexを算出、取得する値として指定(行番号01から1を引くと0になる)
+            pp.copy(text) # 上記で指定したindexの値をクリップボードにコピー
+            tk.popup("コピーしました")
+            break
     # 削除ボタンを押した場合
     if event == "削除":
-        sel_text = values["-history-"][0] # 行番号を取得
-        # 履歴のデータを取り出す
-        index = int(sel_text[0:2])
-        text = int(index - 1)
-        window["-history-"].update(list_format(history)) # キーを使い取得した要素を要素の無い状態に上書きする
-        save_history() # 上記で上書きした内容を保存
-        pp.copy("") # 空文字列をクリップボードにコピー(重複登録防止)
-        tk.popup("履歴を削除しました")
+        if values["-history-"]:
+            sel_text = values["-history-"][0] # 行番号を取得
+            # 履歴のデータを取り出す
+            index = int(sel_text[0:2])
+            text = int(index - 1)
+            window["-history-"].update(list_format(history)) # キーを使い取得した要素を要素の無い状態に上書きする
+            save_history() # 上記で上書きした内容を保存
+            pp.copy("") # 空文字列をクリップボードにコピー(重複登録防止)
+            tk.popup("履歴を削除しました")
+            break
     # クリップボードの内容を定期的に監視し、内容ごとに各処理を行う
     text = pp.paste() # クリップボードの値を取得
     if text == "":
