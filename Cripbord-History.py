@@ -68,11 +68,17 @@ while True:
             sel_text = values["-history-"][0] # 行番号を取得
             # 履歴のデータを取り出す
             index = int(sel_text[0:2])
-            text = int[index - 1]
+            del history[index - 1]
             window["-history-"].update(list_format(history)) # キーを使い取得した要素を要素の無い状態に上書きする
             save_history() # 上記で上書きした内容を保存
             tk.popup("履歴を削除しました")
+            pp.copy("") # 重複登録防止(削除してもクリップボードには値があるため、空文字列で上書きして履歴から完全に削除できるようにするため)
     # クリップボードの内容を確認し処理を行う
     text = pp.paste() # クリップボードの値を取得
-    
+    if text and text not in history:#クリップボードと履歴に値がない場合
+        history.insert(0, text) # リストの先頭に追加
+        if len(history) > MAX_HISTORY:
+            history.pop()
+        window["-history-"].update(list_format(history))
+        save_history()
 window.close()
