@@ -33,7 +33,7 @@ def list_format(history): #関数の宣言と引数にhistoryリストを指定
 # 表示するウィンドウのレイアウトを決める
 LAYOUT = [
        [tk.Text("履歴を選んで'コピーボタン'を押してください。")], # 簡単な使い方説明を表示
-       [tk.Listbox( # Liatboxはリストの項目から選択を行えるようにする関数
+       [tk.Listbox( # Listboxはリストの項目から選択を行えるようにする関数
                    # 選択肢の設定
                    values = list_format(history), #表示させる選択肢に 整形された履歴を指定
                    size = (40,15), # 画面に表示するウィンドウの大きさを指定
@@ -43,7 +43,7 @@ LAYOUT = [
         tk.Button("コピー"),tk.Button("削除"),tk.Button("終了")
         ]
        ]
-# ウィンドウの作成
+# ウィンドウの作成り
 window = tk.Window("クリップボード履歴", LAYOUT)
 # イベントループを使用しウィンドウ内の処理を実行
 while True:
@@ -58,7 +58,35 @@ while True:
         # 選択された履歴をクリップボードにコピー
         set_text = values["-history-"][0] # LAYOUTで設定したキーを使い、リストの最初の文字列(index[0]、行番号)を取得
         index = int(set_text[0:2]) # 取得した文字列(行番号)から2文字目までを取り出す
-        text = history(index - 1) # リストの最初の文字列を取得
-        
-        break
+        text = history(index - 1) # 行番号から1を引くことでリストに対応した正しいindexを算出、取得する値として指定(行番号01から1を引くと0になる)
+        pp.copy(text) # 上記で指定したindexの値をクリップボードにコピー
+        tk.popup("コピーしました")
+    # 削除ボタンを押した場合
+    if event == "削除":
+        sel_text = values("-history-")[0] # 行番号を取得
+        # 履歴のデータを取り出す
+        index = int(sel_text[0:2])
+        text = int(index - 1)
+        window["-history-"].update(list_format(history)) # キーを使い取得した要素を要素の無い状態に上書きする
+        save_history() # 上記で上書きした内容を保存
+        pp.copy("") # 空文字列をクリップボードにコピー(重複登録防止)
+        tk.popup("履歴を削除しました")
+    # クリップボードの内容を定期的に監視し、内容ごとに各処理を行う
+    text = pp.paste() # クリップボードの値を取得
+    if text == "":
+        continue # クリップボードが空(空文字列を保持した状態)なら何もしない
+    if text not in history: #リストにクリップボードの値がない場合
+        history.insert(0,text) # クリップボードの内容をリストの最初(index[0])に挿入
+        if len(history) > MAX_HISTORY: #要素数が20を超えた場合はリストの末尾の要素を削除
+            history.pop()
+            # リストボックス(選択肢の更新)
+            window["-history-"].update(list_format(history))
+            save_history()
+            continue
+    # クリップボードの値が履歴に合った場合、履歴の順番を入れ替える
+    index = history.index(text) # クリップボードの値が履歴にあるか確認
+    if index > 0: # もし履歴に存在した場合
+        del history[index] # 既存の値を削除
+        history.insert(0,text) # クリップボードの値をリストの先頭(index[0])に挿入
+        save_history()
 window.close()
