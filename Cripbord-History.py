@@ -30,3 +30,35 @@ def list_format(history): #関数の宣言と引数にhistoryリストを指定
     lf = lambda v: v.strip().replace("\n","")  # strip関数で前後の空白文字(スペース、タブ,改行)を削除、replace関数で改行コード(\n)を空文字列("")に置換
     short = lambda v: v[:20] + "..." if len(v) > 20 else v  # 表示する履歴が20文字を超える場合、21字目以降の文字を"..."に置き換えて表示(保存した内容が変わるわけではない)
     return [f"{i+1:02}: {lf(short(h))}" for i, h in enumerate(history)] # 上記で定義したlambda関数を使い整形、履歴にインデックス(行番号)を付与した新しいリストを返す
+# 表示するウィンドウのレイアウトを決める
+LAYOUT = [
+       [tk.Text("履歴を選んで'コピーボタン'を押してください。")], # 簡単な使い方説明を表示
+       [tk.Listbox( # Liatboxはリストの項目から選択を行えるようにする関数
+                   # 選択肢の設定
+                   values = list_format(history), #表示させる選択肢に 整形された履歴を指定
+                   size = (40,15), # 画面に表示するウィンドウの大きさを指定
+                   key="-history-" # 選択した履歴をリストから取得するためのキーを設定
+           )],
+       [# 各種ボタンの作成
+        tk.Button("コピー"),tk.Button("削除"),tk.Button("終了")
+        ]
+       ]
+# ウィンドウの作成
+window = tk.Window("クリップボード履歴", LAYOUT)
+# イベントループを使用しウィンドウ内の処理を実行
+while True:
+    # イベントを取得する
+    event,values = window.read(timeout=100) # ウィンドウを読み込むイベントループの開始時間を100msに指定
+    # 終了ボタンが押された場合処理を終了
+    if event == "終了":
+        tk.WINDOW_CLOSED
+        break
+    # コピーボタンを押した場合の処理
+    if event == "コピー":
+        # 選択された履歴をクリップボードにコピー
+        set_text = values["-history-"][0] # LAYOUTで設定したキーを使い、リストの最初の文字列(index[0]、行番号)を取得
+        index = int(set_text[0:2]) # 取得した文字列(行番号)から2文字目までを取り出す
+        text = history(index - 1) # リストの最初の文字列を取得
+        
+        break
+window.close()
