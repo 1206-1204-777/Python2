@@ -62,7 +62,6 @@ while True:
             text = history[index - 1] # 行番号から1を引くことでリストに対応した正しいindexを算出、取得する値として指定(行番号01から1を引くと0になる)
             pp.copy(text) # 上記で指定したindexの値をクリップボードにコピー
             tk.popup("コピーしました")
-            break
     # 削除ボタンを押した場合
     if event == "削除":
         if values["-history-"]:
@@ -74,11 +73,9 @@ while True:
             save_history() # 上記で上書きした内容を保存
             pp.copy("") # 空文字列をクリップボードにコピー(重複登録防止)
             tk.popup("履歴を削除しました")
-            break
     # クリップボードの内容を定期的に監視し、内容ごとに各処理を行う
     text = pp.paste() # クリップボードの値を取得
-    if text == "":
-        continue # クリップボードが空(空文字列を保持した状態)なら何もしない
+
     if text not in history: #リストにクリップボードの値がない場合
         history.insert(0,text) # クリップボードの内容をリストの最初(index[0])に挿入
         if len(history) > MAX_HISTORY: #要素数が20を超えた場合はリストの末尾の要素を削除
@@ -86,7 +83,7 @@ while True:
             # リストボックス(選択肢の更新)
             window["-history-"].update(list_format(history))
             save_history()
-            continue
+            
     # クリップボードの値が履歴に合った場合、履歴の順番を入れ替える
     index = history.index(text) # クリップボードの値が履歴にあるか確認
     if index > 0: # もし履歴に存在した場合
