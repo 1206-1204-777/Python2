@@ -74,7 +74,7 @@ while True:
             pp.copy("") # 重複登録防止(削除してもクリップボードには値があるため、空文字列で上書きして履歴から完全に削除できるようにするため)
     # クリップボードの内容を確認し処理を行う
     text = pp.paste() # クリップボードの値を取得
-    if text and text not in history:#クリップボードと履歴に値がない場合
+    if text and text not in history:#クリップボードに値があり履歴に値がない場合
         history.insert(0, text) # リストの先頭に追加
         if len(history) > MAX_HISTORY:
             history.pop()
