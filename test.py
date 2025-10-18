@@ -24,10 +24,11 @@ print(f"(1) 果物: {peach[0] } 価格: {peach[2]}")  # index0:果物名とindex
 # リスト型のデータを作成
 data = [
         ["ABC,Inc", 500000,4 ],
-        ["WXZT,LLC",800000,4]
+        ["WXZT,LLC",800000,4],
+        ["World,F",250000,3]
         ]
 # CSV形式のファイルを作成し書き込む
 with open("company.csv","w",encoding="utf-8") as f:
     writer = csv.writer(f) # CSVファイルの作成
-    writer.writerow(data) # 作成したファイルにdataのデータを格納
+    writer.writerows(data) # 作成したファイルにdataのデータを格納
     
