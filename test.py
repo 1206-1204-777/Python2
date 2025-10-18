@@ -19,3 +19,15 @@ with open("test.csv","r",encoding= "utf-8") as fp: # CSVファイルをテキス
 peach = result[2] # CSVファイル3行目のデータを取得
 print(f"(1) 果物: {peach[0] } 価格: {peach[2]}")  # index0:果物名とindex2:価格を表示
 #結果：(1) 果物: 桃 価格: 600
+
+# CSVファイルに書き込みをする処理
+# リスト型のデータを作成
+data = [
+        ["ABC,Inc", 500000,4 ],
+        ["WXZT,LLC",800000,4]
+        ]
+# CSV形式のファイルを作成し書き込む
+with open("company.csv","w",encoding="utf-8") as f:
+    writer = csv.writer(f) # CSVファイルの作成
+    writer.writerow(data) # 作成したファイルにdataのデータを格納
+    
