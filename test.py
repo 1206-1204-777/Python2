@@ -5,5 +5,5 @@ with open("test.csv","r",encoding= "utf-8") as fp: # CSVファイルをテキス
         row = line.split(",") # カンマで区切り配列rowに格納
         result.append(row) # 配列resultにrowを追加
 # データが正しく読み込めたか確認
-peach = result[2] # 3行目のデータを取得
-print(f"(1) 果物: {peach[0] } 価格: {peach[2]}")  # 果物名と価格を表示
+peach = result[2] # CSVファイル3行目のデータを取得
+print(f"(1) 果物: {peach[0] } 価格: {peach[2]}")  # index0:果物名とindex2:価格を表示
