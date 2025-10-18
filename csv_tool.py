@@ -17,9 +17,10 @@ def main():
             if data is None:
                 sg.popup_error(filenames + "ファイルが読み込めません")
                 continue
+            # ヘッダーが重複する場合1つに統一
             if len(all_datas) >= 2 and len(data) >=2:
                 if all_datas[0] == data[0]:
-                    data = data[1]
+                    data = data[1:]
             all_datas += data
         if show_csv(all_datas) == False: # show_csv関数を使いテーブル表示する
             break
@@ -76,7 +77,7 @@ def show_csv(data):
             with open(filenames,"w",encoding="utf-8",newline="") as f:
                 writer = csv.writer(f)
                 writer.writerows(data)
-        window.close()
-        return flag
+    window.close()
+    return flag
 if  __name__ == "__main__":
         main()
